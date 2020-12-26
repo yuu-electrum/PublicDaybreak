@@ -21,7 +21,12 @@ public class StartSceneSelectBehavior : MonoBehaviour, ISelectBehavior
 
     public void OnSelectHover()
 	{
-        this.textMesh.color = new Color(1.0f, 0.0f, 0.0f);
+        this.textMesh.color = new Color
+        (
+            Config.StartScene.RColorOnSelectHovered,
+            Config.StartScene.GColorOnSelectHovered,
+            Config.StartScene.BColorOnSelectHovered
+        );
         isLastTimeHovered = true;
 	}
 
@@ -32,12 +37,17 @@ public class StartSceneSelectBehavior : MonoBehaviour, ISelectBehavior
             return;
         }
 
-        this.textMesh.color = new Color(1.0f, 1.0f, 1.0f);
+        this.textMesh.color = new Color
+        (
+            Config.StartScene.RColorOnSelectLeft,
+            Config.StartScene.GColorOnSelectLeft,
+            Config.StartScene.BColorOnSelectLeft
+        );
         isLastTimeHovered = false;
 	}
 
     public void OnSelectClick()
 	{
-        Debug.Log("Clicked");
+
 	}
 }

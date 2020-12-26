@@ -12,9 +12,12 @@ public class SelectComponent : MonoBehaviour
 
     private Dictionary<string, ISelectBehavior> selectBehaviorInterfaces;
 
+    private string lastClickedGameObjectName;
+
     public void Start()
     {
-        this.selectBehaviorInterfaces = new Dictionary<string, ISelectBehavior>();
+        this.selectBehaviorInterfaces  = new Dictionary<string, ISelectBehavior>();
+        this.lastClickedGameObjectName = "";
 
         foreach(var select in this.selects)
 		{
@@ -28,21 +31,31 @@ public class SelectComponent : MonoBehaviour
 
     public void Update()
     {
+        if(this.selectBehaviorInterfaces.Count <= 0)
+		{
+            return;
+		}
+
         var ray = sourceCamera.ScreenPointToRay(Input.mousePosition);
 
         RaycastHit raycastHit;
 
-        if(Physics.Raycast(ray, out raycastHit) && raycastHit.collider.gameObject.tag == Config.SelectTagName)
+        if(Physics.Raycast(ray, out raycastHit) && raycastHit.collider.gameObject.tag == Config.Global.SelectTagName)
 		{
             var hitObject = raycastHit.collider.gameObject;
 
             // オブジェクトが選択された時の動作を実行する
-            this.selectBehaviorInterfaces[hitObject.name]?.OnSelectHover();
+            this.selectBehaviorInterfaces[hitObject.name].OnSelectHover();
 
-            if(Input.GetMouseButtonDown(0))
+            if(Input.GetMouseButtonDown(Config.Global.LeftClick))
 			{
                 // 左クリックされた時の動作を実行する
-                this.selectBehaviorInterfaces[hitObject.name]?.OnSelectClick();
+                this.selectBehaviorInterfaces[hitObject.name].OnSelectClick();
+                this.lastClickedGameObjectName = hitObject.name;
+			}
+            else
+			{
+                this.lastClickedGameObjectName = "";
 			}
 		}
         else
@@ -50,8 +63,20 @@ public class SelectComponent : MonoBehaviour
             foreach(var select in this.selects)
 			{
                 // マウスが離れた時の動作を実行する
-                this.selectBehaviorInterfaces[select.name]?.OnSelectLeave();
+                this.selectBehaviorInterfaces[select.name].OnSelectLeave();
 			}
+            this.lastClickedGameObjectName = "";
 		}
     }
+
+    /// <summary>
+    /// 最後にクリックされたオブジェクトの名前を取得する
+    /// </summary>
+    public string LastClickedGameObjectName
+	{
+        get
+		{
+            return this.lastClickedGameObjectName;
+		}
+	}
 }
