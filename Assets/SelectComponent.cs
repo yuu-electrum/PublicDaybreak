@@ -29,7 +29,12 @@ public class SelectComponent : MonoBehaviour
 		}
     }
 
-    public void Update()
+	public void OnEnable()
+	{
+		this.lastClickedGameObjectName = "";
+	}
+
+	public void Update()
     {
         if(this.selectBehaviorInterfaces.Count <= 0)
 		{

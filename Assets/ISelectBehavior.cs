@@ -1,4 +1,6 @@
-﻿public interface ISelectBehavior
+﻿using UnityEngine;
+
+public interface ISelectBehavior
 {
 	void OnSelectHover();
 	void OnSelectClick();

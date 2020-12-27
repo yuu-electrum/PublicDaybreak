@@ -7,6 +7,7 @@ public class Timer : MonoBehaviour
 	private float elapsedTime = 0.0f;
 	private float startedTime = 0.0f;
 	private bool isTriggered = false;
+	private int currentFrame = 0;
 
 	/// <summary>
 	/// 時間計測を開始する
@@ -25,6 +26,7 @@ public class Timer : MonoBehaviour
 		}
 
 		this.elapsedTime = Time.time - this.startedTime;
+		this.currentFrame++;
 	}
 
 	/// <summary>
@@ -35,6 +37,17 @@ public class Timer : MonoBehaviour
 		get
 		{
 			return this.elapsedTime;
+		}
+	}
+
+	/// <summary>
+	/// 経過したフレームを取得する
+	/// </summary>
+	public int CurrentFrame
+	{
+		get
+		{
+			return this.currentFrame;
 		}
 	}
 }
